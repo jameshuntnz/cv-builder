@@ -2,8 +2,17 @@ import { describe, expect, it } from "vitest";
 import { decodeShare, encodeShare, fromBase64Url, isShared, toBase64Url } from "../src/share";
 import { SAMPLE } from "../src/sample";
 
-/** Pinned: deflate output is stable for a given zlib, and CI runs the same Node as local. */
-const SHARED_LENGTH = 1203;
+/** Inflates a share link's body independently of src/share.ts. */
+async function inflate(body: string): Promise<string> {
+  const bytes = fromBase64Url(body);
+  const source = new ReadableStream<BufferSource>({
+    start(c) {
+      c.enqueue(bytes);
+      c.close();
+    },
+  });
+  return new Response(source.pipeThrough(new DecompressionStream("deflate-raw"))).text();
+}
 
 describe("share links", () => {
   it("round-trips a CV through the hash, compressed", async () => {
@@ -12,9 +21,11 @@ describe("share links", () => {
     expect(hash.slice(0, 4)).toBe("#cv=");
     // URL-safe base64: nothing that needs escaping in an address.
     expect(body.replace(/[A-Za-z0-9_-]/g, "")).toBe("");
-    // Compressed: the example's 1,498 characters of markdown travel in this many.
-    expect(SAMPLE.length).toBe(1498);
-    expect(hash.length).toBe(SHARED_LENGTH);
+    // Raw deflate of the versioned JSON. The exact bytes vary with the platform's zlib, so the
+    // body is checked by inflating it, not against a pinned length.
+    expect(await inflate(body)).toBe(
+      JSON.stringify({ v: 1, md: SAMPLE, paper: "letter", compact: true }),
+    );
     expect(await decodeShare(hash)).toEqual({ md: SAMPLE, paper: "letter", compact: true });
   });
 
