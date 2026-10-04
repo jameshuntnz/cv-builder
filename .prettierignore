@@ -1,0 +1,9 @@
+dist
+coverage
+pnpm-lock.yaml
+public/fonts
+test-results
+playwright-report
+a11y-report
+e2e/vrt/fixture.md
+e2e/vrt/reference

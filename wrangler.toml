@@ -1,0 +1,6 @@
+# Cloudflare Pages: a static site, no Functions or bindings. Security and cache
+# headers live in public/_headers. Deploy with `pnpm run deploy`, or connect the
+# repository in the Pages dashboard (build `pnpm build`, output `dist`).
+name = "cv-builder"
+pages_build_output_dir = "./dist"
+compatibility_date = "2026-10-05"

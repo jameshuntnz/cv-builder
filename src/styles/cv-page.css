@@ -1,0 +1,129 @@
+/*
+ * The paper itself: the page box, its 4x layout and the line-height model every block of
+ * the CV uses (see cv.css for the parts). Measured against the Typst template; see
+ * e2e/vrt.spec.ts.
+ */
+
+/*
+ * Paper tokens are all --cv-*, and all defined here on the page. The app's own theme tokens
+ * (--ink, --accent, …) change with light and dark mode; the paper must never pick them up.
+ */
+.page {
+  --cv-page-width: 210mm;
+  --cv-page-height: 297mm;
+  --cv-ink: #1a1a1a;
+  --cv-accent: var(--cv-ink);
+  --cv-margin: 1.27cm;
+  --cv-gap: 4.28pt;
+  position: relative;
+  box-sizing: border-box;
+  width: 210mm;
+  height: 297mm;
+  padding: var(--cv-margin);
+  overflow: hidden;
+  background: #fff;
+  color: var(--cv-ink);
+  font-family: var(--cv-font, "CV Charter", Georgia, serif);
+  font-size: var(--cv-size, 10pt);
+  line-height: 1.17;
+  font-kerning: normal;
+  text-rendering: optimizeLegibility;
+  overflow-wrap: break-word;
+}
+
+.page.paper-letter {
+  --cv-page-width: 215.9mm;
+  --cv-page-height: 279.4mm;
+  width: 215.9mm;
+  height: 279.4mm;
+  page: letter;
+}
+
+.page.compact {
+  --cv-margin: 1.05cm;
+  --cv-gap: 2.4pt;
+  line-height: 1.13;
+}
+
+/*
+ * Text that can wrap (bullets, descriptions, paragraphs, the contact line) is set on a
+ * taller line, as in the LaTeX/Typst template: its leading only adds space between the lines
+ * of one paragraph, never around it. The negative margins take back the extra half-leading
+ * above the first line and below the last, so the space between blocks stays as designed.
+ * "Line spacing" in the Style panel sets this, and nothing else.
+ */
+.cv-lines {
+  --cv-extra-leading: calc((var(--cv-leading, 1.4) - 1.17) * 0.5em);
+  /* A length, not a bare number: Chrome then snaps each line to the pixel grid instead of
+     rounding every line height down, so long paragraphs keep the template's exact pitch. */
+  line-height: calc(var(--cv-leading, 1.4) * 1em);
+  margin-block: calc(-1 * var(--cv-extra-leading));
+}
+
+.compact .cv-lines {
+  --cv-extra-leading: calc((var(--cv-leading, 1.35) - 1.13) * 0.5em);
+  line-height: calc(var(--cv-leading, 1.35) * 1em);
+}
+
+/*
+ * Where two such blocks meet, both half-leadings must go. Adjoining negative margins don't
+ * add up in CSS (the larger one wins), so the second block takes off both itself.
+ */
+:is(.cv-bullet, .cv-para, .cv-pair) + :is(.cv-bullet, .cv-para, .cv-pair) > .cv-lines,
+.cv-entry:has(.cv-blurb) + .cv-bullet > .cv-lines,
+.cv-contact + .cv-extra > .cv-lines,
+.cv-extra + .cv-extra > .cv-lines {
+  margin-top: calc(-2 * var(--cv-extra-leading));
+}
+
+/* The header's lines are set looser still. */
+.cv-contact > .cv-lines {
+  --cv-extra-leading: calc((var(--cv-leading, 1.4) + 0.384 - 1.17) * 0.5em);
+  line-height: calc((var(--cv-leading, 1.4) + 0.384) * 1em);
+}
+
+.cv-item {
+  white-space: nowrap;
+}
+
+/*
+ * The text is laid out at four times its size and drawn back down. Chrome rounds every line
+ * to a whole CSS pixel (0.75pt) as it lays out; at 4x that rounding is a sixteenth of a
+ * point, so lines land where the Typst template puts them, not up to a pixel off. The PDF
+ * keeps real, selectable text: the scale is just a transform on it.
+ */
+.page-body {
+  zoom: 4;
+  transform: scale(0.25);
+  transform-origin: 0 0;
+  width: calc(var(--cv-page-width) - 2 * var(--cv-margin));
+  height: calc(var(--cv-page-height) - 2 * var(--cv-margin));
+  overflow: hidden;
+  display: flow-root;
+}
+
+/* A page starts flush with its top margin, whatever came before it in the flow. */
+.page-body > :first-child {
+  margin-top: 0 !important;
+}
+
+.page a {
+  color: inherit;
+  text-decoration: underline;
+  text-decoration-thickness: 0.3pt;
+  text-underline-offset: 2pt;
+}
+
+.page a[href^="tel:"] {
+  text-decoration: none;
+}
+
+/* Zero-specificity reset, so every rule below wins over it. */
+:where(.page) :where(p, ul, h1, h2) {
+  margin: 0;
+}
+
+.page code {
+  font-family: ui-monospace, "SF Mono", Menlo, monospace;
+  font-size: 0.9em;
+}

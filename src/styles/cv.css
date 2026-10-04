@@ -1,0 +1,300 @@
+/*
+ * The CV itself. A port of a LaTeX-style résumé template: one serif face, all black,
+ * bold section headings over a hairline rule, bold employer and italic role with
+ * dates flush right, 10pt body. Sizes are in points so they match print exactly.
+ *
+ * Every part reads its look from custom properties (--cv-name-size, --section-case, …) set
+ * on the page from the CV's style (src/style/vars.ts). The fallbacks here are the classic
+ * template, so a CV with no style prints exactly as designed.
+ */
+
+/* Header */
+
+.cv-name {
+  font-family: var(--cv-name-font, inherit);
+  font-size: var(--cv-name-size, 17pt);
+  font-weight: var(--cv-name-weight, 700);
+  font-style: var(--cv-name-style, normal);
+  color: var(--cv-name-color, var(--cv-accent));
+  text-transform: var(--cv-name-transform, none);
+  font-variant-caps: var(--cv-name-caps, normal);
+  letter-spacing: var(--cv-name-tracking, normal);
+  line-height: 1.2;
+  /* Typst's first baseline sits a third of a point lower than Chrome's in the same box. */
+  padding-top: 0.33pt;
+}
+
+.cv-headline {
+  font-family: var(--cv-headline-font, inherit);
+  font-size: var(--cv-headline-size, 13pt);
+  font-weight: var(--cv-headline-weight, 400);
+  font-style: var(--cv-headline-style, normal);
+  color: var(--cv-headline-color, inherit);
+  text-transform: var(--cv-headline-transform, none);
+  font-variant-caps: var(--cv-headline-caps, normal);
+  letter-spacing: var(--cv-headline-tracking, normal);
+  margin-top: 3.55pt;
+  line-height: 1.2;
+}
+
+.cv-contact {
+  font-family: var(--cv-contact-font, inherit);
+  font-size: var(--cv-contact-size, 9.5pt);
+  font-weight: var(--cv-contact-weight, 400);
+  font-style: var(--cv-contact-style, normal);
+  color: var(--cv-contact-color, inherit);
+  text-transform: var(--cv-contact-transform, none);
+  font-variant-caps: var(--cv-contact-caps, normal);
+  letter-spacing: var(--cv-contact-tracking, normal);
+  margin-top: 4.85pt;
+}
+
+.cv-contact .sep {
+  margin: 0 0.45em;
+}
+
+.cv-extra {
+  font-family: var(--cv-extra-font, inherit);
+  font-size: var(--cv-extra-size, inherit);
+  font-weight: var(--cv-extra-weight, 400);
+  font-style: var(--cv-extra-style, italic);
+  color: var(--cv-extra-color, inherit);
+  text-transform: var(--cv-extra-transform, none);
+  font-variant-caps: var(--cv-extra-caps, normal);
+  letter-spacing: var(--cv-extra-tracking, normal);
+  margin-top: 3.5pt;
+}
+
+/* Sections */
+
+.cv-section {
+  font-family: var(--cv-section-font, inherit);
+  font-size: var(--cv-section-size, 12pt);
+  font-weight: var(--cv-section-weight, 700);
+  font-style: var(--cv-section-style, normal);
+  color: var(--cv-section-color, var(--cv-accent));
+  text-transform: var(--cv-section-transform, none);
+  font-variant-caps: var(--cv-section-caps, normal);
+  letter-spacing: var(--cv-section-tracking, normal);
+  margin-top: var(--cv-section-space, 13.13pt);
+  padding-bottom: 2.5pt;
+  border-bottom: var(--cv-rule-width, 0.5pt) solid var(--cv-accent);
+  line-height: 1.2;
+  break-after: avoid;
+}
+
+.cv-header + .cv-section {
+  margin-top: calc(var(--cv-section-space, 13.13pt) + 3.21pt);
+}
+
+.cv-section + * {
+  margin-top: 5.39pt;
+}
+
+.cv-section + .cv-entry {
+  margin-top: calc(var(--cv-entry-space, 8pt) + 1.75pt);
+}
+
+.compact .cv-section {
+  margin-top: var(--cv-section-space, 10.5pt);
+}
+
+.compact .cv-section + * {
+  margin-top: 5pt;
+}
+
+.compact .cv-section + .cv-entry {
+  margin-top: calc(var(--cv-entry-space, 6pt) + 1.5pt);
+}
+
+.cv-para,
+.cv-pair {
+  font-family: var(--cv-text-font, inherit);
+  font-size: var(--cv-text-size, inherit);
+  font-weight: var(--cv-text-weight, 400);
+  font-style: var(--cv-text-style, normal);
+  color: var(--cv-text-color, inherit);
+  text-transform: var(--cv-text-transform, none);
+  font-variant-caps: var(--cv-text-caps, normal);
+  letter-spacing: var(--cv-text-tracking, normal);
+  margin-top: 5pt;
+}
+
+.cv-section + :is(.cv-para, .cv-pair) {
+  margin-top: 5.29pt;
+}
+
+.cv-para + .cv-para {
+  margin-top: 3.1pt;
+}
+
+.cv-pair + .cv-pair {
+  margin-top: 2.65pt;
+}
+
+/* Entries: employer, project or qualification */
+
+.cv-entry {
+  margin-top: calc(var(--cv-entry-space, 8pt) - 0.38pt);
+}
+
+/* Name and dates sit top-aligned, as the template's grid cells do, not on a shared baseline. */
+.cv-row,
+.cv-role {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 1em;
+}
+
+.cv-org {
+  font-family: var(--cv-entry-font, inherit);
+  font-size: var(--cv-entry-size, 11pt);
+  font-weight: var(--cv-entry-weight, 700);
+  font-style: var(--cv-entry-style, normal);
+  color: var(--cv-entry-color, inherit);
+  text-transform: var(--cv-entry-transform, none);
+  font-variant-caps: var(--cv-entry-caps, normal);
+  letter-spacing: var(--cv-entry-tracking, normal);
+}
+
+.cv-right {
+  flex: none;
+  text-align: right;
+}
+
+.cv-row > .cv-right {
+  font-family: var(--cv-dates-font, inherit);
+  font-size: var(--cv-dates-size, inherit);
+  font-weight: var(--cv-dates-weight, 400);
+  font-style: var(--cv-dates-style, normal);
+  color: var(--cv-dates-color, inherit);
+  text-transform: var(--cv-dates-transform, none);
+  font-variant-caps: var(--cv-dates-caps, normal);
+  letter-spacing: var(--cv-dates-tracking, normal);
+}
+
+.cv-role > .cv-right {
+  font-family: var(--cv-dates-font, inherit);
+  font-size: var(--cv-dates-size, inherit);
+  font-weight: var(--cv-dates-weight, 400);
+  font-style: var(--cv-dates-style, italic);
+  color: var(--cv-dates-color, inherit);
+  text-transform: var(--cv-dates-transform, none);
+  font-variant-caps: var(--cv-dates-caps, normal);
+  letter-spacing: var(--cv-dates-tracking, normal);
+}
+
+.cv-blurb {
+  font-family: var(--cv-blurb-font, inherit);
+  font-size: var(--cv-blurb-size, 9.5pt);
+  font-weight: var(--cv-blurb-weight, 400);
+  font-style: var(--cv-blurb-style, italic);
+  color: var(--cv-blurb-color, inherit);
+  text-transform: var(--cv-blurb-transform, none);
+  font-variant-caps: var(--cv-blurb-caps, normal);
+  letter-spacing: var(--cv-blurb-tracking, normal);
+  margin-top: 3.75pt;
+}
+
+.cv-role {
+  margin-top: var(--cv-role-space, 6.61pt);
+}
+
+.cv-role-title {
+  font-family: var(--cv-role-font, inherit);
+  font-size: var(--cv-role-size, inherit);
+  font-weight: var(--cv-role-weight, 400);
+  font-style: var(--cv-role-style, italic);
+  color: var(--cv-role-color, inherit);
+  text-transform: var(--cv-role-transform, none);
+  font-variant-caps: var(--cv-role-caps, normal);
+  letter-spacing: var(--cv-role-tracking, normal);
+}
+
+.cv-role.cv-tight {
+  margin-top: 3.25pt;
+}
+
+.compact .cv-entry {
+  margin-top: var(--cv-entry-space, 6pt);
+}
+
+.compact .cv-role {
+  margin-top: var(--cv-role-space, 5pt);
+}
+
+/* Bullets: one list per bullet so a page can break between any two of them. */
+
+.cv-bullet {
+  margin-top: var(--cv-gap);
+  padding-left: 0.9em;
+  list-style: none;
+}
+
+.cv-role + .cv-bullet,
+.cv-entry + .cv-bullet {
+  margin-top: 3.68pt;
+}
+
+/* A job title straight after its employer's description. */
+.cv-entry + .cv-role {
+  margin-top: calc(var(--cv-role-space, 6.61pt) + 0.18pt);
+}
+
+/* A project's bullets, straight after its description. */
+.cv-entry:has(.cv-blurb) + .cv-bullet {
+  margin-top: 3.89pt;
+}
+
+/* An entry after a stacked job title that has no bullets of its own. */
+.cv-role + .cv-entry {
+  margin-top: calc(var(--cv-entry-space, 8pt) - 0.32pt);
+}
+
+/*
+ * The template keeps an entry's heading, first role and first bullet in one unbreakable
+ * block and sets the rest as a separate list, so the first gap is block spacing: a little
+ * tighter than the list spacing after it.
+ */
+.cv-entry + .cv-role + .cv-bullet + .cv-bullet,
+.cv-entry + .cv-bullet + .cv-bullet {
+  margin-top: calc(var(--cv-gap) - 0.78pt);
+}
+
+.cv-section + .cv-bullet {
+  margin-top: 5.7pt;
+}
+
+.cv-bullet li {
+  font-family: var(--cv-bullet-font, inherit);
+  font-size: var(--cv-bullet-size, inherit);
+  font-weight: var(--cv-bullet-weight, 400);
+  font-style: var(--cv-bullet-style, normal);
+  color: var(--cv-bullet-color, inherit);
+  text-transform: var(--cv-bullet-transform, none);
+  font-variant-caps: var(--cv-bullet-caps, normal);
+  letter-spacing: var(--cv-bullet-tracking, normal);
+  position: relative;
+  padding-left: calc(0.85em + 2.4pt);
+}
+
+.cv-bullet li::before {
+  content: var(--cv-marker, "•");
+  position: absolute;
+  left: 0;
+  font-style: normal;
+  font-weight: 400;
+}
+
+/* Continuation pages: name and page number in the bottom margin. */
+
+.page-footer {
+  position: absolute;
+  right: var(--cv-margin);
+  bottom: calc(var(--cv-margin) * 0.45 - 1.29pt);
+  left: var(--cv-margin);
+  display: flex;
+  justify-content: space-between;
+  font-size: 8pt;
+}

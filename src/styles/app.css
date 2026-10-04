@@ -1,0 +1,390 @@
+/*
+ * The app around the paper, dressed like the CV itself: one serif face, black ink,
+ * bold headings over hairline rules, italics for anything secondary.
+ */
+
+:root {
+  --ink: #1a1a1a;
+  --muted: #5d5d5d;
+  --rule: #1a1a1a;
+  --hair: #d9d6cf;
+  --paper: #ffffff;
+  --desk: #f3f1ec;
+  --field: #ffffff;
+  --accent: #1a1a1a;
+  --on-accent: #ffffff;
+  --focus: #2f5bd3;
+  --warn: #8a3b12;
+  --serif: "CV Charter", Georgia, serif;
+  --mono: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  color-scheme: light;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --ink: #ece9e2;
+    --muted: #a7a39a;
+    --rule: #ece9e2;
+    --hair: #3b3a37;
+    --paper: #1f1e1c;
+    --desk: #161514;
+    --field: #262523;
+    --accent: #ece9e2;
+    --on-accent: #161514;
+    --focus: #8fb0ff;
+    --warn: #f0a77a;
+    color-scheme: dark;
+  }
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  height: 100%;
+}
+
+body {
+  background: var(--desk);
+  color: var(--ink);
+  font-family: var(--serif);
+  font-size: 15px;
+  line-height: 1.4;
+}
+
+/* The app fills the window and its panes scroll, so the paper stays in view while editing. */
+#root {
+  display: flex;
+  flex-direction: column;
+  height: 100dvh;
+}
+
+a {
+  color: inherit;
+  text-underline-offset: 2px;
+  text-decoration-thickness: 1px;
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+  color: inherit;
+}
+
+:focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 2px;
+}
+
+.muted {
+  color: var(--muted);
+  font-style: italic;
+  font-weight: 400;
+}
+
+.warning {
+  color: var(--warn);
+  font-style: italic;
+}
+
+/* Buttons: hairline boxes, ink fill for the main action. */
+
+button {
+  border: 1px solid var(--rule);
+  border-radius: 2px;
+  background: transparent;
+  padding: 0.2em 0.65em;
+  cursor: pointer;
+}
+
+button:hover:not(:disabled) {
+  background: color-mix(in srgb, var(--ink) 8%, transparent);
+}
+
+button:disabled {
+  opacity: 0.4;
+  cursor: default;
+}
+
+button.primary {
+  background: var(--accent);
+  color: var(--on-accent);
+  font-weight: 700;
+}
+
+button.primary:hover:not(:disabled) {
+  background: color-mix(in srgb, var(--accent) 85%, var(--desk));
+}
+
+/* Top bar: the name-and-headline block of the CV. */
+
+.bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 0.75rem 1.5rem;
+  padding: 1rem 1.25rem 0.75rem;
+  border-bottom: 1px solid var(--rule);
+  background: var(--paper);
+}
+
+.brand h1 {
+  margin: 0;
+  font-size: 1.6rem;
+  line-height: 1.1;
+}
+
+.brand p {
+  margin: 0.15rem 0 0;
+  font-style: italic;
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+  min-width: 0;
+}
+
+.field.inline {
+  flex-direction: row;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.field.check {
+  cursor: pointer;
+}
+
+.field-label {
+  font-size: 0.8rem;
+  font-style: italic;
+  color: var(--muted);
+}
+
+input:not([type="checkbox"]),
+select,
+textarea {
+  min-width: 0;
+  border: 1px solid var(--hair);
+  border-radius: 2px;
+  background: var(--field);
+  padding: 0.25em 0.45em;
+}
+
+input:not([type="checkbox"]):focus,
+select:focus {
+  border-color: var(--rule);
+}
+
+/* Layout: outline | editor | paper. */
+
+.tabs {
+  display: none;
+}
+
+/*
+ * Columns: sections | editor | divider | paper. The paper's width is the dragged
+ * --paper-width when set. Hidden panes collapse to nothing; the paper stays laid out
+ * off-screen so its page breaks are ready when it's shown or printed.
+ */
+.workspace {
+  --outline: 13rem;
+  --paper-column: var(--paper-width, minmax(22rem, 0.9fr));
+  flex: 1;
+  display: grid;
+  grid-template-columns: var(--outline) minmax(22rem, 1fr) 7px var(--paper-column);
+  grid-template-areas: "outline editor split paper";
+  min-height: 0;
+}
+
+.workspace[data-outline="hidden"] {
+  --outline: 2.4rem;
+}
+
+.workspace[data-paper="hidden"] {
+  grid-template-columns: var(--outline) minmax(22rem, 1fr) 0 2.4rem;
+}
+
+.rail-left {
+  grid-area: outline;
+  border-right: 1px solid var(--hair);
+}
+
+.rail-right {
+  grid-area: paper;
+  border-left: 1px solid var(--hair);
+}
+
+.workspace > .outline {
+  grid-area: outline;
+}
+
+.workspace > .editor-pane {
+  grid-area: editor;
+}
+
+.workspace > .splitter {
+  grid-area: split;
+}
+
+.workspace > .paper-pane {
+  grid-area: paper;
+}
+
+.workspace[data-paper="hidden"] > .splitter {
+  display: none;
+}
+
+.workspace[data-paper="hidden"] > .paper-pane {
+  position: absolute;
+  left: -300vw;
+  width: 60rem;
+  visibility: hidden;
+}
+
+.splitter {
+  cursor: col-resize;
+  touch-action: none;
+  background: linear-gradient(var(--hair), var(--hair)) center / 1px 100% no-repeat;
+}
+
+.splitter:hover,
+.splitter:focus-visible {
+  background-color: color-mix(in srgb, var(--ink) 8%, transparent);
+}
+
+/* Positioned, so absolutely placed content (screen-reader labels, the measuring page) is clipped. */
+.pane,
+.outline {
+  position: relative;
+  min-height: 0;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.pane-title {
+  margin: 0 0 0.5rem;
+  padding-bottom: 0.2rem;
+  border-bottom: 1px solid var(--rule);
+  font-size: 1.05rem;
+}
+
+.paper-pane {
+  padding: 1rem;
+}
+
+.paper-scroll {
+  flex: 1;
+  overflow: auto;
+  padding: 0.5rem 0 2rem;
+}
+
+.paper-scroll:focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: -2px;
+}
+
+.pages {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.25rem;
+  cursor: pointer;
+}
+
+.pages .page {
+  box-shadow:
+    0 1px 2px rgb(0 0 0 / 12%),
+    0 8px 24px rgb(0 0 0 / 10%);
+}
+
+.pages [data-ref]:hover {
+  outline: 1px dashed #9a9a9a;
+  outline-offset: 2px;
+}
+
+.measure {
+  position: absolute;
+  top: 0;
+  left: -100000px;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+@media (max-width: 1100px) {
+  .workspace,
+  .workspace[data-outline="hidden"] {
+    --outline: 0;
+  }
+
+  .outline,
+  .rail-left {
+    display: none;
+  }
+}
+
+@media (max-width: 760px) {
+  .tabs {
+    display: flex;
+    gap: 0.4rem;
+    padding: 0.5rem 1rem;
+  }
+
+  .tabs [aria-selected="true"] {
+    background: var(--accent);
+    color: var(--on-accent);
+  }
+
+  #root {
+    height: auto;
+    min-height: 100%;
+  }
+
+  .workspace {
+    display: block;
+  }
+
+  .splitter,
+  .rail,
+  .hide-panel,
+  .workspace[data-view="paper"] .editor-pane {
+    display: none;
+  }
+
+  .workspace[data-view="edit"] .paper-pane {
+    position: absolute;
+    left: -300vw;
+    width: 60rem;
+    visibility: hidden;
+  }
+
+  .workspace[data-view="paper"] .paper-pane {
+    position: static;
+    width: auto;
+    visibility: visible;
+    padding: 0.5rem 1rem;
+  }
+
+  .bar {
+    padding: 0.75rem 1rem;
+  }
+}

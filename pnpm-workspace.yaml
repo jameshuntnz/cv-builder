@@ -1,0 +1,4 @@
+# Dependencies may not run install scripts unless listed here as allowed.
+# esbuild's only fetches a platform binary that pnpm already installs as a dependency.
+allowBuilds:
+  esbuild: false

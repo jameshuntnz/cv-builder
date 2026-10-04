@@ -1,0 +1,9 @@
+node_modules
+dist
+coverage
+.DS_Store
+.wrangler
+.claude
+test-results
+playwright-report
+a11y-report

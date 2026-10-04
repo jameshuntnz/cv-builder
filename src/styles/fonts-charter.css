@@ -1,0 +1,51 @@
+/*
+ * The default face. Where the system has Apple's Charter (every Mac) that is used, the same
+ * font the Typst template typesets with, so the paper matches it letter for letter.
+ * Elsewhere, XCharter: Bitstream Charter, extended (public/fonts/LICENSE-XCharter.txt), the
+ * same design with a few hundredths of a point narrower spacing.
+ * BITSTREAM CHARTER is a registered trademark of Bitstream Inc.
+ */
+
+@font-face {
+  font-family: "CV Charter";
+  font-style: normal;
+  font-weight: 400;
+  font-display: block;
+  src:
+    local("Charter Roman"),
+    local("Charter-Roman"),
+    url("/fonts/XCharter-Roman.woff2") format("woff2");
+}
+
+@font-face {
+  font-family: "CV Charter";
+  font-style: normal;
+  font-weight: 700;
+  font-display: block;
+  src:
+    local("Charter Bold"),
+    local("Charter-Bold"),
+    url("/fonts/XCharter-Bold.woff2") format("woff2");
+}
+
+@font-face {
+  font-family: "CV Charter";
+  font-style: italic;
+  font-weight: 400;
+  font-display: block;
+  src:
+    local("Charter Italic"),
+    local("Charter-Italic"),
+    url("/fonts/XCharter-Italic.woff2") format("woff2");
+}
+
+@font-face {
+  font-family: "CV Charter";
+  font-style: italic;
+  font-weight: 700;
+  font-display: block;
+  src:
+    local("Charter Bold Italic"),
+    local("Charter-BoldItalic"),
+    url("/fonts/XCharter-BoldItalic.woff2") format("woff2");
+}

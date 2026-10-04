@@ -1,0 +1,309 @@
+/* The editing column: outline, cards, rich-text fields, source view and notes. */
+
+.outline {
+  padding: 1rem;
+  border-right: 1px solid var(--hair);
+  overflow: auto;
+}
+
+.outline-list {
+  list-style: none;
+  margin: 0 0 1rem;
+  padding: 0;
+}
+
+.outline-item {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.15rem 0;
+  border-bottom: 1px solid var(--hair);
+  background: var(--desk);
+}
+
+.outline-item.is-hidden .outline-name {
+  color: var(--muted);
+  text-decoration: line-through;
+}
+
+.outline-name {
+  flex: 1;
+  border: 0;
+  padding: 0.2rem 0.25rem;
+  text-align: left;
+  font-weight: 700;
+}
+
+/* 24px square at least: WCAG 2.2's minimum target size. */
+.drag {
+  min-width: 24px;
+  min-height: 24px;
+  border: 0;
+  padding: 0.1rem 0.25rem;
+  color: var(--muted);
+  letter-spacing: -0.2em;
+  cursor: grab;
+  touch-action: none;
+}
+
+.dragging {
+  position: relative;
+  z-index: 2;
+  opacity: 0.85;
+  box-shadow: 0 6px 18px rgb(0 0 0 / 18%);
+}
+
+.add-section {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.act {
+  padding: 0.05em 0.5em;
+  font-size: 0.85rem;
+  border-color: var(--hair);
+}
+
+.act.remove {
+  border-color: transparent;
+  color: var(--muted);
+}
+
+.act[aria-pressed="true"] {
+  font-style: italic;
+  color: var(--muted);
+}
+
+.editor-pane {
+  padding: 1rem 1rem 0;
+}
+
+.editor-head {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  align-items: center;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid var(--rule);
+}
+
+.segmented {
+  display: flex;
+}
+
+.segmented button {
+  border-radius: 0;
+}
+
+.segmented button + button {
+  border-left: 0;
+}
+
+.segmented [aria-selected="true"] {
+  background: var(--accent);
+  color: var(--on-accent);
+}
+
+.editor-bar {
+  display: flex;
+  flex: 1 1 24rem;
+  flex-wrap: nowrap;
+  align-items: center;
+  gap: 0.3rem;
+}
+
+.editor-bar button {
+  font-size: 0.85rem;
+}
+
+.toolbar-gap {
+  flex: 1;
+}
+
+.editor-scroll {
+  position: relative;
+  flex: 1;
+  overflow: auto;
+  padding: 0.75rem 0.25rem 2rem 0;
+}
+
+.cards {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.card-title {
+  margin: 0;
+  font-size: 1.15rem;
+}
+
+.section-fold > .fold-head {
+  padding-bottom: 0.2rem;
+  border-bottom: 1px solid var(--rule);
+}
+
+.field-section {
+  flex: 1;
+}
+
+.field-section input {
+  border-color: transparent;
+  background: transparent;
+  padding-left: 0;
+  font-weight: 700;
+  font-size: 1.15rem;
+}
+
+.field-section input:hover {
+  border-color: var(--hair);
+}
+
+/* The name is an ordinary field like the headline beside it, just bold. */
+.field-name input {
+  font-weight: 700;
+}
+
+.section-card.is-hidden .section-fold > .fold-body,
+.section-card.is-hidden .field-section input {
+  opacity: 0.45;
+}
+
+.grid-2,
+.grid-entry,
+.grid-role,
+.contact-row,
+.row {
+  display: grid;
+  gap: 0.4rem;
+  align-items: end;
+}
+
+.grid-2 {
+  grid-template-columns: 1fr 1fr;
+  margin-top: 0.5rem;
+}
+
+.grid-entry {
+  grid-template-columns: 3fr 2fr;
+  gap: 0.5rem 0.6rem;
+}
+
+.grid-role {
+  grid-template-columns: 3fr 2fr auto;
+}
+
+.contact-rows {
+  list-style: none;
+  margin: 0.6rem 0 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+.contact-row {
+  grid-template-columns: 7.5rem 1fr auto;
+}
+
+.row {
+  grid-template-columns: 1fr auto;
+  margin-top: 0.5rem;
+}
+
+.adders {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.3rem;
+  margin-top: 0.6rem;
+}
+
+.entry-card {
+  margin-top: 0.6rem;
+  border: 1px solid var(--hair);
+  border-radius: 2px;
+  background: var(--paper);
+}
+
+.entry-card > .fold-head {
+  padding: 0.35rem 0.4rem;
+  cursor: pointer;
+}
+
+.section-fold > .fold-head {
+  cursor: pointer;
+}
+
+.entry-card[data-fold="open"] > .fold-head {
+  border-bottom: 1px solid var(--hair);
+}
+
+.entry-body {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  padding: 0.9rem 1rem 1rem;
+}
+
+.entry-body > .rich-field,
+.role > .rich-field {
+  margin-top: 0;
+}
+
+.entry-summary {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.field-org input {
+  font-weight: 700;
+}
+
+.role {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-top: 0.4rem;
+  padding: 0.75rem 0.85rem 0.85rem;
+  border-radius: 2px;
+  background: var(--desk);
+}
+
+.entry-body > .add {
+  align-self: flex-start;
+}
+
+.role .grid-role input {
+  font-style: italic;
+}
+
+.flash {
+  animation: flash 0.9s ease-out;
+}
+
+@keyframes flash {
+  from {
+    background: color-mix(in srgb, var(--focus) 22%, transparent);
+  }
+}
+
+.segmented [aria-selected="true"]:hover,
+.tabs [aria-selected="true"]:hover {
+  background: var(--accent);
+}
+
+@media (max-width: 760px) {
+  .grid-entry,
+  .grid-2 {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .contact-row,
+  .pair-row {
+    grid-template-columns: 6rem 1fr auto;
+  }
+}

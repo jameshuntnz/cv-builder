@@ -1,0 +1,52 @@
+/* Panel title rows with their Hide button, and the strip a hidden panel leaves behind. */
+
+/* A panel's title row: the heading, and its Hide button on the right. */
+.pane-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+  border-bottom: 1px solid var(--rule);
+}
+
+.pane-head .pane-title {
+  margin: 0;
+  border-bottom: 0;
+}
+
+.hide-panel {
+  border: 0;
+  padding: 0 0.2rem;
+  color: var(--muted);
+  font-size: 0.85rem;
+  font-style: italic;
+}
+
+.hide-panel:hover {
+  color: var(--ink);
+  text-decoration: underline;
+}
+
+/* A hidden panel's strip: full height, label running down it. */
+.rail {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 1rem 0;
+  border: 0;
+  border-radius: 0;
+  background: var(--desk);
+  color: var(--muted);
+}
+
+.rail:hover:not(:disabled) {
+  color: var(--ink);
+  background: color-mix(in srgb, var(--ink) 6%, var(--desk));
+}
+
+.rail-text {
+  writing-mode: vertical-rl;
+  font-style: italic;
+}

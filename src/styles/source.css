@@ -1,0 +1,104 @@
+/* The Markdown view and the writing notes under the editor. */
+
+/* Markdown view: a textarea over a coloured copy of its own text. */
+
+.source {
+  position: relative;
+  height: 100%;
+  min-height: 30rem;
+  display: grid;
+}
+
+.source-hl,
+.source textarea {
+  grid-area: 1 / 1;
+  margin: 0;
+  padding: 0.75rem;
+  border: 1px solid var(--hair);
+  font-family: var(--mono);
+  font-size: 13px;
+  line-height: 1.55;
+  white-space: pre-wrap;
+  overflow-wrap: break-word;
+  overflow: auto;
+  scrollbar-gutter: stable;
+  tab-size: 2;
+}
+
+.source textarea {
+  resize: none;
+  background: transparent;
+  color: transparent;
+  caret-color: var(--ink);
+}
+
+.source-hl {
+  background: var(--field);
+  pointer-events: none;
+}
+
+.hl-name,
+.hl-section,
+.hl-entry {
+  font-weight: 700;
+}
+
+.hl-field,
+.hl-role {
+  color: var(--focus);
+}
+
+.hl-comment {
+  color: var(--muted);
+  font-style: italic;
+}
+
+/* Notes: quiet when there's nothing; a callout when there's something to address. */
+
+/* At the top of the editor, under its tab row; capped so it never crowds the editor out. */
+.notes {
+  max-height: 32vh;
+  overflow: auto;
+  padding: 0.4rem 0;
+  border-bottom: 1px solid var(--hair);
+}
+
+.notes summary {
+  cursor: pointer;
+  font-weight: 700;
+}
+
+.notes.has-notes {
+  margin: 0.6rem 0 0.25rem;
+  padding: 0.6rem 0.8rem;
+  border: 0;
+  border-left: 4px solid var(--warn);
+  background: color-mix(in srgb, var(--warn) 9%, var(--desk));
+}
+
+.notes.has-notes summary {
+  color: var(--warn);
+}
+
+.notes ol {
+  margin: 0.45rem 0 0;
+  padding-left: 1.3rem;
+}
+
+.notes li + li {
+  margin-top: 0.3rem;
+}
+
+.notes button {
+  border: 0;
+  padding: 0;
+  text-align: left;
+  text-decoration: underline;
+  text-decoration-color: color-mix(in srgb, var(--ink) 35%, transparent);
+  text-underline-offset: 3px;
+}
+
+.notes button:hover {
+  background: transparent;
+  text-decoration-color: currentColor;
+}

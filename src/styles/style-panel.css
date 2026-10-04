@@ -1,0 +1,93 @@
+/* The Style panel */
+
+.style-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.presets {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(10rem, 1fr));
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+}
+
+.preset {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  padding: 0.5rem 0.65rem;
+  border-color: var(--hair);
+  text-align: left;
+}
+
+.preset .muted {
+  font-size: 0.85rem;
+}
+
+.style-fold {
+  border-bottom: 1px solid var(--hair);
+}
+
+.style-fold > .fold-head {
+  padding: 0.35rem 0;
+  cursor: pointer;
+}
+
+.style-group {
+  flex: 1;
+}
+
+.settings {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(12rem, 1fr));
+  gap: 0.6rem 1rem;
+  padding: 0.4rem 0 0.9rem 1.9rem;
+}
+
+.setting {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+
+.setting > label {
+  font-size: 0.8rem;
+  font-style: italic;
+  color: var(--muted);
+}
+
+.setting-toggle {
+  flex-direction: row;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.setting-toggle > label {
+  font-size: 0.95rem;
+  font-style: normal;
+  color: var(--ink);
+}
+
+.with-unit {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.with-unit input[type="number"] {
+  width: 5.5rem;
+}
+
+.with-unit input[type="color"] {
+  width: 3rem;
+  height: 1.9rem;
+  padding: 0.1rem;
+}
+
+.with-unit .warning {
+  flex-basis: 100%;
+  font-size: 0.85rem;
+}

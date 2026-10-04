@@ -1,0 +1,73 @@
+/*
+ * Printing is the PDF export. The pages on screen are already laid out at their
+ * printed size, so print shows only them, at full size, edge to edge.
+ */
+
+@page {
+  size: A4;
+  margin: 0;
+}
+
+@page letter {
+  size: letter;
+  margin: 0;
+}
+
+@media print {
+  html,
+  body,
+  #root {
+    height: auto;
+    background: #fff;
+  }
+
+  .bar,
+  .tabs,
+  .outline,
+  .editor-pane,
+  .pane-head,
+  .pane-title,
+  .rail,
+  .warning,
+  .toast,
+  dialog {
+    display: none !important;
+  }
+
+  .splitter {
+    display: none !important;
+  }
+
+  .workspace,
+  .paper-pane,
+  .paper-scroll {
+    position: static !important;
+    width: auto !important;
+    visibility: visible !important;
+    display: block !important;
+    height: auto;
+    overflow: visible;
+    padding: 0;
+    border: 0;
+  }
+
+  .pages {
+    zoom: 1 !important;
+    display: block;
+    gap: 0;
+  }
+
+  .pages .page {
+    box-shadow: none;
+    break-after: page;
+    print-color-adjust: exact;
+  }
+
+  .pages .page:last-child {
+    break-after: auto;
+  }
+
+  .pages [data-ref]:hover {
+    outline: none;
+  }
+}
