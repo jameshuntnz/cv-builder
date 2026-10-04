@@ -124,17 +124,17 @@ test/                                Vitest + Testing Library, jsdom
 e2e/                                 Playwright journeys; e2e/a11y is the axe watcher
 ```
 
-## Deploy (Cloudflare Pages)
+## Deploy (Cloudflare)
 
-`wrangler.toml` describes the site: a static build in `dist`, no Functions. Headers
-(Content Security Policy, caching) are in `public/_headers`. Connect the repository in
-Cloudflare Pages with:
+`wrangler.toml` deploys the site as Workers static assets: the build in `dist`, no Worker
+script. Headers (Content Security Policy, caching) are in `public/_headers`. Connect the
+repository in Cloudflare's Workers & Pages with:
 
-| Setting          | Value                                    |
-| ---------------- | ---------------------------------------- |
-| Build command    | `pnpm build`                             |
-| Output directory | `dist`                                   |
-| Node version     | 24 (`NODE_VERSION` environment variable) |
+| Setting        | Value                                    |
+| -------------- | ---------------------------------------- |
+| Build command  | `pnpm build`                             |
+| Deploy command | `npx wrangler deploy`                    |
+| Node version   | 24 (`NODE_VERSION` environment variable) |
 
 Or build locally and upload with Wrangler (`pnpm dlx wrangler login` first):
 

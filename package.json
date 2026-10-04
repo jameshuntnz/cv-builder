@@ -19,7 +19,7 @@
     "e2e": "playwright test",
     "vrt:reference": "node scripts/vrt-reference.mjs",
     "vrt": "playwright test --project=vrt",
-    "deploy": "pnpm build && pnpm dlx wrangler pages deploy"
+    "deploy": "pnpm build && pnpm dlx wrangler deploy"
   },
   "engines": {
     "node": ">=24"
