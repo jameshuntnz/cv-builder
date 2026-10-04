@@ -10,6 +10,9 @@ export default defineConfig({
     environment: "jsdom",
     include: ["test/**/*.test.{ts,tsx}"],
     setupFiles: ["test/setup.ts"],
+    // The long editing journeys take about a second here, but several times that on a
+    // two-core CI runner with coverage on; the default 5s left too little room.
+    testTimeout: 20_000,
     coverage: {
       provider: "v8",
       include: ["src/**/*.{ts,tsx}"],
